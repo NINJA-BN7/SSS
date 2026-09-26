@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtomobillar Katalogi — AutoPrime</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: rgba(37, 99, 235, 0.1);
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-elevated: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --container-width: 1280px;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-elevated: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ==========================================================================
+           2. BASE & RESET
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        button, input, select { font-family: inherit; outline: none; border: none; }
+        button { cursor: pointer; }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .btn-primary { background-color: var(--primary); color: #fff; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ==========================================================================
+           3. HEADER & NAVIGATION
+           ========================================================================== */
+        .top-bar {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .top-bar-flex { display: flex; justify-content: space-between; align-items: center; }
+        .top-info { display: flex; gap: 20px; }
+
+        header.navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        [data-theme="light"] header.navbar { background-color: rgba(255, 255, 255, 0.85); }
+
+        .nav-container { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--text-main); }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a { font-weight: 600; font-size: 15px; color: var(--text-muted); }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+
+        /* Breadcrumb Banner */
+        .page-header {
+            background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.9) 100%), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') center/cover;
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 { font-size: 36px; font-weight: 800; margin-bottom: 10px; }
+        .breadcrumb { font-size: 14px; color: var(--text-muted); }
+        .breadcrumb a { color: var(--primary); }
+
+        /* ==========================================================================
+           4. CATALOG LAYOUT (SIDEBAR FILTER + PRODUCTS GRID)
+           ========================================================================== */
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        /* Sidebar Filters */
+        .filter-sidebar {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-header h3 { font-size: 18px; font-weight: 700; }
+        .reset-btn { background: none; color: var(--primary); font-size: 13px; font-weight: 600; }
+
+        .filter-block { margin-bottom: 24px; }
+        .filter-block label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+
+        .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .price-inputs input {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 13px;
+        }
+
+        /* Top Controls Bar */
+        .catalog-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .control-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sort-select {
+            padding: 10px 16px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+        }
+
+        .view-btn {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-btn.active {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Products Grid & List View */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .products-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .products-grid.list-view .car-card {
+            display: flex;
+            flex-direction: row;
+            height: 220px;
+        }
+
+        .products-grid.list-view .car-img-wrapper {
+            width: 320px;
+            height: 100%;
+        }
+
+        /* Car Card */
+        .car-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .car-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(6px);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .car-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .car-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .car-card:hover .car-img-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .car-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .car-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .car-price { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+
+        .specs-mini {
+            display: flex;
+            justify-content: space-between;
+            background: var(--bg-main);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .specs-mini span { color: var(--text-main); font-weight: 600; }
+
+        .card-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+
+        .page-num {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .page-num.active, .page-num:hover {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Compare Floating Drawer */
+        .compare-drawer {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            padding: 16px 30px;
+            border-radius: var(--radius-lg);
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .compare-drawer.active { bottom: 30px; }
+
+        /* Quick View Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-backdrop.active { opacity: 1; pointer-events: all; }
+
+        .quickview-modal {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .quickview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            background: none;
+            color: var(--text-muted);
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 3000;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .toast {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 50px 0 30px 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 992px) {
+            .catalog-layout { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .quickview-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .products-grid.list-view .car-card { flex-direction: column; height: auto; }
+            .products-grid.list-view .car-img-wrapper { width: 100%; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-flex">
+            <div class="top-info">
+                <span>📍 Toshkent sh., Sergeli tumani, TAYM ko'chasi 12-uy</span>
+                <span>📞 +998 (71) 200-00-99</span>
+            </div>
+            <div>
+                <button id="themeToggle" style="background:none; font-size: 16px;">🌙</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><span>⚡ Auto</span>Prime</a>
+            <nav class="nav-links">
+                <a href="index.html">Bosh sahifa</a>
+                <a href="products.html" class="active">Avtomobillar Katalogi</a>
+                <a href="about.html">Biz haqimizda</a>
+            </nav>
+            <div>
+                <a href="products.html" class="btn btn-primary">Konsultatsiya</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE BREADCRUMB HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Avtomobillar Katalogi</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Bosh sahifa</a> / <span>Katalog</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATALOG MAIN CONTENT -->
+    <div class="container">
+        <div class="catalog-layout">
+            
+            <!-- SIDEBAR FILTERS -->
+            <aside class="filter-sidebar">
+                <div class="filter-header">
+                    <h3>Filtrlar</h3>
+                    <button class="reset-btn" onclick="resetFilters()">Tazalash ↺</button>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-block">
+                    <label>Markalar</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Chevrolet" class="filter-brand" onchange="applyFilters()"> Chevrolet
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="BYD" class="filter-brand" onchange="applyFilters()"> BYD
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Kia" class="filter-brand" onchange="applyFilters()"> Kia
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="BMW" class="filter-brand" onchange="applyFilters()"> BMW
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Mercedes-Benz" class="filter-brand" onchange="applyFilters()"> Mercedes-Benz
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Body Type -->
+                <div class="filter-block">
+                    <label>Kuzov Turi</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="sedan" class="filter-type" onchange="applyFilters()"> Sedan
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="suv" class="filter-type" onchange="applyFilters()"> SUV / Krossover
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="electric" class="filter-type" onchange="applyFilters()"> Elektromobil
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="filter-block">
+                    <label>Yoqilg'i Turi</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Benzin" class="filter-fuel" onchange="applyFilters()"> Benzin
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Elektr" class="filter-fuel" onchange="applyFilters()"> Elektr
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="Gibrid" class="filter-fuel" onchange="applyFilters()"> Gibrid
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-block">
+                    <label>Narx Oralig'i ($)</label>
+                    <div class="price-inputs">
+                        <input type="number" id="minPrice" placeholder="Min" value="0" oninput="applyFilters()">
+                        <span>-</span>
+                        <input type="number" id="maxPrice" placeholder="Max" value="150000" oninput="applyFilters()">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- PRODUCTS SECTION -->
+            <main>
+                <!-- TOP CONTROLS -->
+                <div class="catalog-controls">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Model nomini yozing..." oninput="applyFilters()">
+                    </div>
+
+                    <div class="control-actions">
+                        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+                            <option value="default">Odatiy tartib</option>
+                            <option value="price-low">Narx: Arzondan Qimmatga</option>
+                            <option value="price-high">Narx: Qimmatdan Arzonga</option>
+                            <option value="year-new">Yili: Eng Yangi</option>
+                        </select>
+
+                        <button class="view-btn active" id="gridViewBtn" onclick="setViewMode('grid')" title="Katakcha">📱</button>
+                        <button class="view-btn" id="listViewBtn" onclick="setViewMode('list')" title="Ro'yxat">📄</button>
+                    </div>
+                </div>
+
+                <!-- CARS CONTAINER -->
+                <div class="products-grid" id="productsGrid">
+                    <!-- Dynamic rendering via JavaScript -->
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <button class="page-num active">1</button>
+                    <button class="page-num">2</button>
+                    <button class="page-num">3</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- FLOATING COMPARE DRAWER -->
+    <div class="compare-drawer" id="compareDrawer">
+        <span>Taqqoslash uchun <strong id="compareCount">0</strong> ta mashina tanlandi</span>
+        <button class="btn btn-primary" onclick="alert('Taqqoslash sahifasi tez orada ishga tushadi!')">Taqqoslash 📊</button>
+        <button class="btn btn-outline" onclick="clearCompare()">Tazalash</button>
+    </div>
+
+    <!-- QUICK VIEW MODAL -->
+    <div class="modal-backdrop" id="quickViewModal">
+        <div class="quickview-modal">
+            <button class="modal-close" onclick="closeQuickView()">&times;</button>
+            <div class="quickview-grid" id="quickViewContent">
+                <!-- Javascript fills this content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="text-align: center;">
+            <p>&copy; 2026 AutoPrime Catalog system. Barcha huquqlar saqlangan.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // FULL CAR DATASET
+        const allCars = [
+            {
+                id: 101,
+                brand: "BYD",
+                name: "BYD Song Plus Champion EV",
+                type: "electric",
+                fuel: "Elektr",
+                price: 32000,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "204 o.k.",
+                image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80",
+                badge: "Elektro",
+                description: "Zamonaviy dizayn, 505 km masofa zaxirasi va intellektual boshqaruv tizimiga ega mashhur SUV."
+            },
+            {
+                id: 102,
+                brand: "Chevrolet",
+                name: "Chevrolet Tahoe Premier 2024",
+                type: "suv",
+                fuel: "Benzin",
+                price: 88000,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "420 o.k.",
+                image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
+                badge: "Full-Size SUV",
+                description: "V8 dvigateliga ega hashamatli va quvvatli yo'ltanlamas avtomobil."
+            },
+            {
+                id: 103,
+                brand: "Kia",
+                name: "Kia K5 GT-Line",
+                type: "sedan",
+                fuel: "Benzin",
+                price: 34500,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "194 o.k.",
+                image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80",
+                badge: "Sport Sedan",
+                description: "Agressiv sport dizayni va zamonaviy multimedia imkoniyatlariga ega qulay sedan."
+            },
+            {
+                id: 104,
+                brand: "Mercedes-Benz",
+                name: "Mercedes-Benz S500 Long",
+                type: "sedan",
+                fuel: "Gibrid",
+                price: 145000,
+                year: 2023,
+                transmission: "Avtomat",
+                power: "435 o.k.",
+                image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80",
+                badge: "Lux Class",
+                description: "Biznes klass standarti. Premium qulaylik va ilg'or xavfsizlik texnologiyalari."
+            },
+            {
+                id: 105,
+                brand: "BMW",
+                name: "BMW X7 M-Sport Package",
+                type: "suv",
+                fuel: "Benzin",
+                price: 125000,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "381 o.k.",
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
+                badge: "M-Power",
+                description: "M-Sport paketi bilan jihozlangan premium 7 o'rinli krossover."
+            },
+            {
+                id: 106,
+                brand: "BYD",
+                name: "BYD Han EV AWD",
+                type: "electric",
+                fuel: "Elektr",
+                price: 46000,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "517 o.k.",
+                image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80",
+                badge: "Elektro Sedan",
+                description: "0 dan 100 km/s tezlikka 3.9 soniyada erishuvchi premium flagman elektromobil."
+            },
+            {
+                id: 107,
+                brand: "Chevrolet",
+                name: "Chevrolet Traverse High Country",
+                type: "suv",
+                fuel: "Benzin",
+                price: 52000,
+                year: 2023,
+                transmission: "Avtomat",
+                power: "318 o.k.",
+                image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80",
+                badge: "Family SUV",
+                description: "Oila uchun mo'ljallangan keng va qulay 3 qatorli shahar krossoveri."
+            },
+            {
+                id: 108,
+                brand: "Kia",
+                name: "Kia Sorento Signature 2024",
+                type: "suv",
+                fuel: "Gibrid",
+                price: 43000,
+                year: 2024,
+                transmission: "Avtomat",
+                power: "230 o.k.",
+                image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80",
+                badge: "Hybrid SUV",
+                description: "Tejamkor gibrid dvigatel va panorama tomga ega zamonaviy krossover."
+            }
+        ];
+
+        let comparedCars = [];
+
+        // RENDER PRODUCTS
+        function renderProducts(cars) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            if (cars.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-muted);">
+                    <h2>Afsuski, avtomobil topilmadi 🔍</h2>
+                    <p>Filtr parametringizni o'zgartirib ko'ring.</p>
+                </div>`;
+                return;
+            }
+
+            cars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.innerHTML = `
+                    <span class="car-badge">${car.badge}</span>
+                    <div class="car-img-wrapper">
+                        <img src="${car.image}" alt="${car.name}">
+                    </div>
+                    <div class="car-info">
+                        <h3 class="car-title">${car.name}</h3>
+                        <div class="car-price">$${car.price.toLocaleString()}</div>
+                        <div class="specs-mini">
+                            <div>Yili: <span>${car.year}</span></div>
+                            <div>Yoqilg'i: <span>${car.fuel}</span></div>
+                            <div>Quvvat: <span>${car.power}</span></div>
+                        </div>
+                        <div class="card-buttons">
+                            <button class="btn btn-primary" onclick="openQuickView(${car.id})" style="flex: 1;">Batafsil</button>
+                            <button class="btn btn-outline" onclick="toggleCompare(${car.id})" title="Taqqoslash">📊</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // APPLY FILTERS & SORT
+        function applyFilters() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            const sortVal = document.getElementById('sortSelect').value;
+
+            // Get Selected Brands
+            const selectedBrands = Array.from(document.querySelectorAll('.filter-brand:checked')).map(cb => cb.value);
+            // Get Selected Types
+            const selectedTypes = Array.from(document.querySelectorAll('.filter-type:checked')).map(cb => cb.value);
+            // Get Selected Fuels
+            const selectedFuels = Array.from(document.querySelectorAll('.filter-fuel:checked')).map(cb => cb.value);
+
+            let filtered = allCars.filter(car => {
+                const matchSearch = car.name.toLowerCase().includes(searchQuery) || car.brand.toLowerCase().includes(searchQuery);
+                const matchPrice = car.price >= minPrice && car.price <= maxPrice;
+                const matchBrand = selectedBrands.length === 0 || selectedBrands.includes(car.brand);
+                const matchType = selectedTypes.length === 0 || selectedTypes.includes(car.type);
+                const matchFuel = selectedFuels.length === 0 || selectedFuels.includes(car.fuel);
+
+                return matchSearch && matchPrice && matchBrand && matchType && matchFuel;
+            });
+
+            // SORTING LOGIC
+            if (sortVal === 'price-low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-high') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'year-new') {
+                filtered.sort((a, b) => b.year - a.year);
+            }
+
+            renderProducts(filtered);
+        }
+
+        // RESET FILTERS
+        function resetFilters() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('searchInput').value = '';
+            document.getElementById('minPrice').value = '0';
+            document.getElementById('maxPrice').value = '150000';
+            document.getElementById('sortSelect').value = 'default';
+            applyFilters();
+        }
+
+        // TOGGLE GRID/LIST VIEW
+        function setViewMode(mode) {
+            const grid = document.getElementById('productsGrid');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+
+            if (mode === 'list') {
+                grid.classList.add('list-view');
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            } else {
+                grid.classList.remove('list-view');
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            }
+        }
+
+        // QUICK VIEW MODAL
+        function openQuickView(carId) {
+            const car = allCars.find(c => c.id === carId);
+            if (!car) return;
+
+            const modalContent = document.getElementById('quickViewContent');
+            modalContent.innerHTML = `
+                <div>
+                    <img src="${car.image}" alt="${car.name}" style="width: 100%; border-radius: 12px; object-fit: cover;">
+                </div>
+                <div>
+                    <span style="color: var(--primary); font-weight: 700; font-size: 14px;">${car.brand.toUpperCase()}</span>
+                    <h2 style="font-size: 28px; margin-bottom: 10px;">${car.name}</h2>
+                    <div style="font-size: 26px; font-weight: 800; color: var(--accent); margin-bottom: 20px;">$${car.price.toLocaleString()}</div>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 15px;">${car.description}</p>
+                    
+                    <div style="background: var(--bg-main); padding: 16px; border-radius: 8px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 14px;">
+                        <div>Yili: <strong>${car.year}</strong></div>
+                        <div>Yoqilg'i: <strong>${car.fuel}</strong></div>
+                        <div>Uzatgich: <strong>${car.transmission}</strong></div>
+                        <div>Quvvat: <strong>${car.power}</strong></div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="alert('Xarid arizasi qabul qilindi!')" style="width: 100%;">Sotib Olish / Buyurtma Berish</button>
+                </div>
+            `;
+
+            document.getElementById('quickViewModal').classList.add('active');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.remove('active');
+        }
+
+        // COMPARE SYSTEM
+        function toggleCompare(carId) {
+            const index = comparedCars.indexOf(carId);
+            if (index > -1) {
+                comparedCars.splice(index, 1);
+                showToast("Taqqoslashdan olib tashlandi.");
+            } else {
+                if (comparedCars.length >= 3) {
+                    showToast("Maksimal 3 ta mashina taqqoslashingiz mumkin!");
+                    return;
+                }
+                comparedCars.push(carId);
+                showToast("Taqqoslash ro'yxatiga qo'shildi!");
+            }
+
+            const drawer = document.getElementById('compareDrawer');
+            document.getElementById('compareCount').innerText = comparedCars.length;
+
+            if (comparedCars.length > 0) {
+                drawer.classList.add('active');
+            } else {
+                drawer.classList.remove('active');
+            }
+        }
+
+        function clearCompare() {
+            comparedCars = [];
+            document.getElementById('compareDrawer').classList.remove('active');
+        }
+
+        // TOAST NOTIFICATION
+        function showToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // THEME TOGGLE
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            const cur = document.documentElement.getAttribute('data-theme');
+            const next = cur === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            themeBtn.innerText = next === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('theme', next);
+        });
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(allCars);
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeBtn.innerText = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        });
+    </script>
+</body>
+</html>

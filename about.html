@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biz haqimizda — AutoPrime Rasmiy Avtosalon</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: rgba(37, 99, 235, 0.1);
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-elevated: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --container-width: 1280px;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-elevated: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ==========================================================================
+           2. BASE & RESET STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        button, input, select, textarea { font-family: inherit; outline: none; border: none; }
+        button { cursor: pointer; }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding { padding: 90px 0; }
+
+        .section-title {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px auto;
+        }
+
+        .section-title .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .btn-primary { background-color: var(--primary); color: #ffffff; }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ==========================================================================
+           3. HEADER & NAVIGATION
+           ========================================================================== */
+        .top-bar {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .top-bar-flex { display: flex; justify-content: space-between; align-items: center; }
+        .top-info { display: flex; gap: 20px; }
+
+        header.navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        [data-theme="light"] header.navbar { background-color: rgba(255, 255, 255, 0.85); }
+
+        .nav-container { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--text-main); }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a { font-weight: 600; font-size: 15px; color: var(--text-muted); }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+
+        /* BREADCRUMB HEADER */
+        .page-header {
+            background: linear-gradient(135deg, rgba(15,23,42,0.92) 0%, rgba(30,41,59,0.9) 100%), url('https://images.unsplash.com/photo-1562519819-016930ada31b?auto=format&fit=crop&w=1920&q=80') center/cover;
+            padding: 70px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
+        .breadcrumb { font-size: 14px; color: var(--text-muted); }
+        .breadcrumb a { color: var(--primary); }
+
+        /* ==========================================================================
+           4. ABOUT STORY SECTION
+           ========================================================================== */
+        .about-story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .story-img-wrapper {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .story-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: #ffffff;
+            padding: 20px 30px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .experience-badge h3 { font-size: 36px; font-weight: 800; line-height: 1; }
+        .experience-badge span { font-size: 13px; font-weight: 600; text-transform: uppercase; }
+
+        .story-content h2 { font-size: 34px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+        .story-content p { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; }
+
+        .story-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .highlight-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+        }
+
+        .highlight-item h4 { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .highlight-item p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+        /* ==========================================================================
+           5. VALUES SECTION
+           ========================================================================== */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .value-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px 20px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .value-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .value-card p { font-size: 14px; color: var(--text-muted); }
+
+        /* ==========================================================================
+           6. TEAM SECTION
+           ========================================================================== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .team-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .team-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .team-info { padding: 20px; }
+        .team-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .team-info span { font-size: 13px; color: var(--primary); font-weight: 600; display: block; margin-bottom: 12px; }
+        .team-info p { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+        /* ==========================================================================
+           7. GALLERY SECTION (LIGHTBOX)
+           ========================================================================== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 240px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        /* ==========================================================================
+           8. CONTACT & MAP SECTION
+           ========================================================================== */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: var(--radius-md);
+        }
+
+        .contact-form-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .contact-form-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .contact-info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .info-box-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .info-box h4 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+        .info-box p { color: var(--text-muted); font-size: 14px; margin: 0; }
+
+        .map-wrapper {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            height: 200px;
+        }
+
+        .map-wrapper iframe { width: 100%; height: 100%; border: none; }
+
+        /* ==========================================================================
+           9. MODALS & TOAST
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-backdrop.active { opacity: 1; pointer-events: all; }
+
+        .lightbox-img {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 3000;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .toast {
+            background-color: var(--primary);
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 50px 0 30px 0;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 80px;
+        }
+
+        @media (max-width: 992px) {
+            .about-story, .contact-wrapper { grid-template-columns: 1fr; }
+            .values-grid, .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .values-grid, .team-grid, .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-flex">
+            <div class="top-info">
+                <span>📍 Toshkent sh., Sergeli tumani, TAYM ko'chasi 12-uy</span>
+                <span>📞 +998 (71) 200-00-99</span>
+            </div>
+            <div>
+                <button id="themeToggle" style="background:none; font-size: 16px;">🌙</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><span>⚡ Auto</span>Prime</a>
+            <nav class="nav-links">
+                <a href="index.html">Bosh sahifa</a>
+                <a href="products.html">Avtomobillar Katalogi</a>
+                <a href="about.html" class="active">Biz haqimizda</a>
+            </nav>
+            <div>
+                <a href="#contactForm" class="btn btn-primary">Bog'lanish</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Kompaniya Haqida</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Bosh sahifa</a> / <span>Biz haqimizda</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT STORY SECTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="about-story">
+                <div class="story-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1562519819-016930ada31b?auto=format&fit=crop&w=800&q=80" alt="AutoPrime Avtosaloni">
+                    <div class="experience-badge">
+                        <h3>15+</h3>
+                        <span>Yillik Tajriba</span>
+                    </div>
+                </div>
+
+                <div class="story-content">
+                    <h2>Biz O'zbekiston Avtomobil Bozorida Yangi Standartlarni O'rnatmoqdamiz</h2>
+                    <p>AutoPrime rasmiy avtosaloni 2011-yilda tashkil etilgan bo'lib, bugungi kunga kelib mamlakatimizdagi eng ishonchli va yirik avtodilerlardan biriga aylandi. Biz xaridorlarimizga eng so'nggi rusumdagi xorijiy va mahalliy avtomobillarni shaffof shartlar bilan taqdim etamiz.</p>
+                    <p>Bizning maqsadimiz — shunchaki avtomobil sotish emas, balki har bir mijozimizga uning turmush tarziga eng mos keladigan ideal ulovni tanlashda professional ko'maklashishdir.</p>
+
+                    <div class="story-highlights">
+                        <div class="highlight-item">
+                            <h4>Rasmiy Kafolat</h4>
+                            <p>Barcha mashinalarga 3-5 yillik zavod kafolati.</p>
+                        </div>
+                        <div class="highlight-item">
+                            <h4>Halol Nasiya</h4>
+                            <p>Yashirin foizlarsiz qulay kredit va liboslar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE VALUES SECTION -->
+    <section class="section-padding" style="background-color: var(--bg-card);">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Prinsiplarimiz</span>
+                <h2>Bizning Asosiy Qadriyatlarimiz</h2>
+                <p>Ishimizdagi har bir qadamimiz ushbu tamoyillarga asoslangan</p>
+            </div>
+
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Ochiqlik va Halollik</h3>
+                    <p>Shartnomalarimizda yashirin to'lovlar va ortiqcha foizlar mutlaqo yo'q.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💎</div>
+                    <h3>Yuqori Sifat</h3>
+                    <p>Sotuvdagi har bir avtomobil sertifikatlangan va sinovdan o'tgan.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🚀</div>
+                    <h3>Tezkorlik</h3>
+                    <p>Hujjatlar va kredit rasmiylashtirish bor-yo'g'i 1 soat vaqt oladi.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🎧</div>
+                    <h3>G'amxo'rlik</h3>
+                    <p>Sotuvdan keyingi servis va 24/7 mijozlarni qo'llab-quvvatlash xizmati.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Mutaxassislar</span>
+                <h2>Bizning Professional Jamoamiz</h2>
+                <p>Sizga xizmat ko'rsatishdan mamnun bo'ladigan malakali xodimlarimiz</p>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80" class="team-img" alt="Bosh Direktor">
+                    <div class="team-info">
+                        <h3>Alisher Mahmudov</h3>
+                        <span>Bosh Direktor (CEO)</span>
+                        <p>Avtomobil biznesida 12 yillik tajribaga ega strategik rahbar.</p>
+                        <button class="btn btn-outline" onclick="contactStaff('Alisher Mahmudov')">Bog'lanish</button>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" class="team-img" alt="Sotuv Bo'limi Boshlig'i">
+                    <div class="team-info">
+                        <h3>Elena Smirnova</h3>
+                        <span>Sotuv Bo'limi Boshlig'i</span>
+                        <p>Mijozlar bilan ishlash va dilerlik aloqalari bo'yicha ekspert.</p>
+                        <button class="btn btn-outline" onclick="contactStaff('Elena Smirnova')">Bog'lanish</button>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" class="team-img" alt="Kredit Mutaxassisi">
+                    <div class="team-info">
+                        <h3>Bobur Rahimov</h3>
+                        <span>Moliya va Kredit Maslahatchisi</span>
+                        <p>Eng ma'qul avtokredit shartlarini tanlab beruvchi mutaxassis.</p>
+                        <button class="btn btn-outline" onclick="contactStaff('Bobur Rahimov')">Bog'lanish</button>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80" class="team-img" alt="Servis Menejeri">
+                    <div class="team-info">
+                        <h3>Nigora Rustamova</h3>
+                        <span>Kafolat va Servis Menejeri</span>
+                        <p>Sotuvdan keyingi xizmat ko'rsatish sifatini nazorat qiladi.</p>
+                        <button class="btn btn-outline" onclick="contactStaff('Nigora Rustamova')">Bog'lanish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="section-padding" style="background-color: var(--bg-card);">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Foto Gallereya</span>
+                <h2>Avtosalonimizdan Lavhalar</h2>
+                <p>Zamonaviy shourumimiz va mijozlarimizga mashina topshirish jarayonlari</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1562519819-016930ada31b?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1562519819-016930ada31b?auto=format&fit=crop&w=600&q=80" alt="Shourum">
+                    <div class="gallery-overlay">🔍 Kattalashtirish</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80" alt="Mashinalar ko'rgazmasi">
+                    <div class="gallery-overlay">🔍 Kattalashtirish</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" alt="Premium Avto">
+                    <div class="gallery-overlay">🔍 Kattalashtirish</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT & MAP SECTION -->
+    <section class="section-padding" id="contactForm">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Aloqa</span>
+                <h2>Biz Bilan Bog'laning</h2>
+                <p>Savollaringiz bormi? Formani to'ldiring, mutaxassisimiz tez orada javob beradi.</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <!-- Contact Form -->
+                <div class="contact-form-card">
+                    <h3>Xabar Yuborish</h3>
+                    <p>Barcha so'rovlar 15 daqiqa ichida ko'rib chiqiladi.</p>
+
+                    <form onsubmit="handleMessageSubmit(event)">
+                        <div class="form-group">
+                            <label>Ismingiz</label>
+                            <input type="text" id="senderName" placeholder="Masalan: Sardor" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon Raqamingiz</label>
+                            <input type="tel" id="senderPhone" placeholder="+998 90 123 45 67" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Xabar Matni</label>
+                            <textarea id="senderMessage" rows="4" placeholder="Sizni qaysi mashina yoki xizmat qiziqtirmoqda?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Xabarni Yuborish ✉️</button>
+                    </form>
+                </div>
+
+                <!-- Contact Info & Map -->
+                <div class="contact-info-card">
+                    <div class="info-box">
+                        <div class="info-box-icon">📍</div>
+                        <div>
+                            <h4>Bosh Filial Manzili</h4>
+                            <p>Toshkent sh., Sergeli tumani, TAYM ko'chasi 12-uy</p>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-box-icon">📞</div>
+                        <div>
+                            <h4>Telefon & Telegram</h4>
+                            <p>+998 (71) 200-00-99 / @AutoPrime_Uz</p>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-box-icon">⏰</div>
+                        <div>
+                            <h4>Ish Vaqti</h4>
+                            <p>Dushanba - Yakshanba: 09:00 dan 20:00 gacha</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div class="map-wrapper">
+                        <iframe src="https://maps.google.com/maps?q=Tashkent%20Sergeli&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="modal-backdrop" id="lightboxModal" onclick="closeLightbox()">
+        <img src="" id="lightboxImg" class="lightbox-img" alt="Enlarged view">
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="text-align: center;">
+            <p>&copy; 2026 AutoPrime. Barcha huquqlar saqlangan. Senior Developer Standard Code.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // FORM SUBMIT HANDLER
+        function handleMessageSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('senderName').value;
+            showToast(`Rahmat, ${name}! Xabaringiz muvaffaqiyatli yuborildi.`);
+            e.target.reset();
+        }
+
+        // STAFF DIRECT CONTACT
+        function contactStaff(staffName) {
+            showToast(`${staffName} bilan bog'lanish so'rovi yuborildi!`);
+        }
+
+        // LIGHTBOX GALLERY
+        function openLightbox(src) {
+            const modal = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImg');
+            img.src = src;
+            modal.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.remove('active');
+        }
+
+        // TOAST NOTIFICATIONS
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // THEME TOGGLE LOGIC
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            themeBtn.innerText = newTheme === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // INIT ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeBtn.innerText = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        });
+    </script>
+</body>
+</html>

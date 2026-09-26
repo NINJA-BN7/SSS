@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoPrime — Premium Avtosalon & Avtomobillar Maydoni</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: rgba(37, 99, 235, 0.1);
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-elevated: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --container-width: 1280px;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-elevated: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ==========================================================================
+           2. BASE & RESET STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            outline: none;
+            border: none;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-title .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* UI Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: #000;
+            font-weight: 700;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           3. HEADER & NAVIGATION
+           ========================================================================== */
+        .top-bar {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .top-bar-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            color: var(--text-main);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 50%;
+        }
+
+        header.navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        [data-theme="light"] header.navbar {
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .badge-icon {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .badge-icon .count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--accent);
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            background: none;
+            color: var(--text-main);
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION WITH SEARCH FILTER
+           ========================================================================== */
+        .hero {
+            position: relative;
+            padding: 120px 0 160px 0;
+            background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.85) 100%), url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .hero-title {
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            color: var(--primary);
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Filter Box Overlay */
+        .filter-wrapper {
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) auto;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group select, .filter-group input {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            width: 100%;
+        }
+
+        /* ==========================================================================
+           5. STATS COUNTER SECTION
+           ========================================================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           6. FEATURED CARS SECTION
+           ========================================================================== */
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .car-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .car-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .car-img-wrapper {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .car-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .car-card:hover .car-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .car-details {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .car-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .car-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .car-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .spec-item svg {
+            width: 18px;
+            height: 18px;
+            margin-bottom: 4px;
+            fill: var(--primary);
+        }
+
+        .spec-item span {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 2px;
+        }
+
+        .car-card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        /* ==========================================================================
+           7. AUTO CREDIT CALCULATOR WIDGET
+           ========================================================================== */
+        .calculator-section {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calc-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .calc-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .calc-field {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .calc-field label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .calc-field input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--bg-elevated);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .calc-results {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .calc-res-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calc-res-item:last-child {
+            border-bottom: none;
+        }
+
+        .calc-res-item .label {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .calc-res-item .value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* ==========================================================================
+           8. WHY CHOOSE US / ADVANTAGES
+           ========================================================================== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px 25px;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ==========================================================================
+           9. TESTIMONIALS SECTION
+           ========================================================================== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-text {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .user-details span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           10. FAQ ACCORDION SECTION
+           ========================================================================== */
+        .faq-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .faq-header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .faq-content {
+            padding: 0 24px 20px 24px;
+            color: var(--text-muted);
+            font-size: 15px;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .faq-item.active .faq-content {
+            display: block;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* ==========================================================================
+           11. FOOTER SECTION
+           ========================================================================== */
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding-top: 80px;
+            padding-bottom: 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            margin-top: 16px;
+            font-size: 14px;
+            max-width: 320px;
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ==========================================================================
+           12. MODAL DIALOGS & TOASTS
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            width: 100%;
+            max-width: 550px;
+            padding: 35px;
+            position: relative;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-backdrop.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            color: var(--text-muted);
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: var(--radius-sm);
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: var(--primary);
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            font-weight: 600;
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .cars-grid, .features-grid, .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-grid { grid-template-columns: repeat(2, 1fr); }
+            .calc-wrapper { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 36px; }
+            .cars-grid, .features-grid, .testimonials-grid, .stats-grid { grid-template-columns: 1fr; }
+            .filter-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-flex">
+            <div class="top-info">
+                <span>📍 Toshkent sh., Sergeli tumani, TAYM ko'chasi 12-uy</span>
+                <span>📞 +998 (71) 200-00-99</span>
+                <span>⏰ Har kuni: 09:00 - 20:00</span>
+            </div>
+            <div class="top-actions">
+                <button class="theme-toggle" id="themeToggle" title="Mavzuni o'zgartirish">🌙</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span>⚡ Auto</span>Prime
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html" class="active">Bosh sahifa</a>
+                <a href="products.html">Avtomobillar Katalogi</a>
+                <a href="about.html">Biz haqimizda</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="products.html" class="badge-icon" title="Tanlanganlar">
+                    ❤️ <span class="count" id="favCount">0</span>
+                </a>
+                <button class="btn btn-primary" onclick="openModal()">Test-drayvga yozilish</button>
+                <button class="mobile-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Orzuyingizdagi Avtomobilni <span>AutoPrime</span> Bilan Toping</h1>
+                <p class="hero-subtitle">O'zbekistondagi eng yirik rasmiy dilerlik tarmog'i. Halol nasiya savdo, rasmiy kafolat va yuqori darajadagi xizmat ko'rsatish.</p>
+                <div class="hero-buttons">
+                    <a href="products.html" class="btn btn-primary">Katalogni Ko'rish</a>
+                    <a href="#calculator" class="btn btn-outline">Kredit Hisoblash</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK FILTER PANEL -->
+    <div class="container filter-wrapper">
+        <div class="filter-card">
+            <form id="heroFilter" onsubmit="event.preventDefault(); handleFilter();" class="filter-grid">
+                <div class="filter-group">
+                    <label>Moshina Markasi</label>
+                    <select id="brandSelect">
+                        <option value="">Barchasi</option>
+                        <option value="chevrolet">Chevrolet</option>
+                        <option value="byd">BYD</option>
+                        <option value="kia">Kia</option>
+                        <option value="bmw">BMW</option>
+                        <option value="mercedes">Mercedes-Benz</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Kuzov Turi</label>
+                    <select id="typeSelect">
+                        <option value="">Barcha turlar</option>
+                        <option value="sedan">Sedan</option>
+                        <option value="suv">Krossover / SUV</option>
+                        <option value="electric">Elektromobil</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Maksimal Narx ($)</label>
+                    <input type="number" id="priceInput" placeholder="Masalan: 30000">
+                </div>
+                <div class="filter-group">
+                    <label>Ishlab Chiqarilgan Yili</label>
+                    <select id="yearSelect">
+                        <option value="">Barcha yillar</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-accent">Qidirish 🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STATS COUNTER SECTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Yillik Tajriba</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="8500">0</div>
+                    <div class="stat-label">Sotilgan Avtomobillar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="99">0</div>
+                    <div class="stat-label">% Mamnun Mijozlar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label">Soat Bepul Konsultatsiya</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED CARS SECTION -->
+    <section class="section-padding" style="background-color: var(--bg-card);">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Saralanganlar</span>
+                <h2>Ommabop Avtomobillar</h2>
+                <p>Eng ko'p xarid qilinayotgan va xaridorlarimiz tomonidan yuqori baholanayotgan modellar</p>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="filterCategory('all')">Barchasi</button>
+                <button class="tab-btn" onclick="filterCategory('sedan')">Sedanlar</button>
+                <button class="tab-btn" onclick="filterCategory('suv')">SUV / Krossover</button>
+                <button class="tab-btn" onclick="filterCategory('electric')">Elektromobillar</button>
+            </div>
+
+            <div class="cars-grid" id="carsContainer">
+                <!-- Javascript orqali car cardlar generatsiya qilinadi -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTO CREDIT CALCULATOR SECTION -->
+    <section class="section-padding calculator-section" id="calculator">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Moliyaviy Yordam</span>
+                <h2>Avtokredit Kalkulyatori</h2>
+                <p>Oylik to'lovingizni real vaqt rejimida hisoblab ko'ring</p>
+            </div>
+
+            <div class="calc-wrapper">
+                <div class="calc-form">
+                    <div class="calc-field">
+                        <label>
+                            <span>Avtomobil Narxi:</span>
+                            <span id="carPriceVal">$30,000</span>
+                        </label>
+                        <input type="range" id="carPrice" min="10000" max="100000" step="1000" value="30000">
+                    </div>
+
+                    <div class="calc-field">
+                        <label>
+                            <span>Boshlang'ich To'lov (%):</span>
+                            <span id="downPaymentVal">25%</span>
+                        </label>
+                        <input type="range" id="downPayment" min="10" max="70" step="5" value="25">
+                    </div>
+
+                    <div class="calc-field">
+                        <label>
+                            <span>Kredit Muddat:</span>
+                            <span id="loanTermVal">36 Oy</span>
+                        </label>
+                        <input type="range" id="loanTerm" min="12" max="60" step="12" value="36">
+                    </div>
+                </div>
+
+                <div class="calc-results">
+                    <div class="calc-res-item">
+                        <span class="label">Boshlang'ich To'lov Summasi:</span>
+                        <span class="value" id="resDownPayment">$7,500</span>
+                    </div>
+                    <div class="calc-res-item">
+                        <span class="label">Kredit Summasi:</span>
+                        <span class="value" id="resLoanAmount">$22,500</span>
+                    </div>
+                    <div class="calc-res-item">
+                        <span class="label">Oylik To'lov:</span>
+                        <span class="value" id="resMonthly">$780</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal()">Kreditga Ariza Yuborish</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Afzalliklarimiz</span>
+                <h2>Nega Aynan AutoPrime?</h2>
+                <p>Mijozlarimizga eng qulay va ishonchli xizmatlarni taklif etamiz</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Rasmiy Kafolat</h3>
+                    <p>Barcha avtomobillarimizga 3 yildan 5 yilgacha rasmiy dilerlik kafolati beriladi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Tez rasmiylashtirish</h3>
+                    <p>Hujjatlarni rasmiylashtirish va mashinani topshirish bor-yo'g'i 2 soat vaqt oladi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Trade-In Xizmati</h3>
+                    <p>Eski avtomobilingizni topshirib, o'rniga yangisini ustama to'lov bilan xarid qiling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section-padding" style="background-color: var(--bg-card);">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Sharhlar</span>
+                <h2>Mijozlarimiz Fikri</h2>
+                <p>Bizdan avtomobil xarid qilgan mamnun mijozlarimizning samimiy fikrlari</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"AutoPrime saloni orqali BYD Song Plus xarid qildim. Xizmat ko'rsatish darajasi va tezkorlik menga juda yoqdi. Rahmat!"</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" class="user-avatar" alt="Mijoz">
+                        <div class="user-details">
+                            <h4>Jamshid Aliyev</h4>
+                            <span>Tadbirkor</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Trade-in xizmatidan foydalandim. Eski Cobalt moshinani berib, 1 soatda yangi Kia K5 minib chiqib ketdim. Tavsiya qilaman!"</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" class="user-avatar" alt="Mijoz">
+                        <div class="user-details">
+                            <h4>Sardor Karimov</h4>
+                            <span>Dasturchi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Halol nasiya savdo shartlari judayam shaffof. Hech qanday yashirin foizlar yo'q. Barakasini bersin!"</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80" class="user-avatar" alt="Mijoz">
+                        <div class="user-details">
+                            <h4>Malika Umarova</h4>
+                            <span>Shifokor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Savollar</span>
+                <h2>Ko'p Beriladigan Savollar</h2>
+            </div>
+
+            <div class="faq-wrapper">
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <span>Avtokredit uchun qanday hujjatlar talab qilinadi?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-content">
+                        Kredit rasmiylashtirish uchun faqatgina fuqarolik pasporti (yoki ID karta) kifoya qiladi. Daromad manbai va kafil talab etilmaydigan paketlarimiz ham mavjud.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <span>Test-Drayv xizmati bepulmi?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-content">
+                        Ha, albatta! Barcha mavjud avtomobillarni oldindan yozilish orqali mutlaqo bepul test-drayv qilib ko'rishingiz mumkin.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <span>Mashinalarga kafolat beriladimi?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-content">
+                        Barcha yangi avtomobillarga rasmiy 3 yildan 5 yilgacha yoki 100,000 km masofagacha kafolat taqdim etiladi.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo"><span>⚡ Auto</span>Prime</a>
+                    <p>O'zbekistondagi eng ishonchli va zamonaviy avtosalon. Sifat, ishonch va qulaylik uyg'unligi.</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Tezkor Havolalar</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Bosh sahifa</a>
+                        <a href="products.html">Avtomobillar</a>
+                        <a href="about.html">Biz haqimizda</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Xizmatlar</h4>
+                    <div class="footer-links">
+                        <a href="#calculator">Avtokredit</a>
+                        <a href="#">Trade-In</a>
+                        <a href="#">Sug'urta</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Bog'lanish</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">Toshkent sh, Sergeli tumani</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Telefon: +998 (71) 200-00-99</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 AutoPrime. Barcha huquqlar hamkorlikda hisoblanadi.</p>
+                <p>Senior Developer Code Quality Guaranteed</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL WINDOW FOR TEST DRIVE & INQUIRY -->
+    <div class="modal-backdrop" id="bookingModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 style="font-size: 24px; margin-bottom: 10px;">Test-Drayvga Yozilish</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Ma'lumotlaringizni qoldiring, mutaxassisimiz 15 daqiqada bog'lanadi.</p>
+            
+            <form onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label>Ism Familiyangiz</label>
+                    <input type="text" placeholder="Jasur Rahmatov" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefon Raqamingiz</label>
+                    <input type="tel" placeholder="+998 90 123 45 67" required>
+                </div>
+                <div class="form-group">
+                    <label>Qaysi Model Qiziqtirmoqda?</label>
+                    <select required>
+                        <option value="BYD Song Plus EV">BYD Song Plus EV</option>
+                        <option value="Chevrolet Tahoe">Chevrolet Tahoe 2024</option>
+                        <option value="Kia K5 GT-Line">Kia K5 GT-Line</option>
+                        <option value="Mercedes-Benz S-Class">Mercedes-Benz S-Class</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">So'rov Yuborish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div id="toast-container"></div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // MOCK CAR DATA
+        const sampleCars = [
+            {
+                id: 1,
+                name: "BYD Song Plus Champion EV",
+                category: "electric",
+                price: 32000,
+                image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80",
+                badge: "Elektro",
+                power: "204 o.k.",
+                speed: "505 km masofa",
+                year: "2024"
+            },
+            {
+                id: 2,
+                name: "Chevrolet Tahoe Premier 2024",
+                category: "suv",
+                price: 88000,
+                image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
+                badge: "Premium SUV",
+                power: "420 o.k.",
+                speed: "6.2 sek",
+                year: "2024"
+            },
+            {
+                id: 3,
+                name: "Kia K5 GT-Line",
+                category: "sedan",
+                price: 34500,
+                image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80",
+                badge: "Sport Sedan",
+                power: "194 o.k.",
+                speed: "8.6 sek",
+                year: "2024"
+            },
+            {
+                id: 4,
+                name: "Mercedes-Benz S500 Long",
+                category: "sedan",
+                price: 145000,
+                image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80",
+                badge: "Lux Class",
+                power: "435 o.k.",
+                speed: "4.9 sek",
+                year: "2023"
+            },
+            {
+                id: 5,
+                name: "BMW X7 M-Sport Package",
+                category: "suv",
+                price: 125000,
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
+                badge: "M-Power",
+                power: "381 o.k.",
+                speed: "5.8 sek",
+                year: "2024"
+            },
+            {
+                id: 6,
+                name: "Zeekr 001 AWD Performance",
+                category: "electric",
+                price: 54000,
+                image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80",
+                badge: "Elektro Hyper",
+                power: "544 o.k.",
+                speed: "3.8 sek",
+                year: "2024"
+            }
+        ];
+
+        let favoriteCount = 0;
+
+        // RENDER CAR CARDS
+        function renderCars(cars) {
+            const container = document.getElementById('carsContainer');
+            container.innerHTML = '';
+
+            cars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.innerHTML = `
+                    <span class="car-badge">${car.badge}</span>
+                    <div class="car-img-wrapper">
+                        <img src="${car.image}" alt="${car.name}">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title">${car.name}</h3>
+                        <div class="car-price">$${car.price.toLocaleString()}</div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Quvvat: <span>${car.power}</span>
+                            </div>
+                            <div class="spec-item">
+                                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                Dinamika: <span>${car.speed}</span>
+                            </div>
+                            <div class="spec-item">
+                                <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                                Yil: <span>${car.year}</span>
+                            </div>
+                        </div>
+                        <div class="car-card-actions">
+                            <a href="products.html" class="btn btn-primary" style="flex: 1; padding: 10px;">Batafsil</a>
+                            <button class="btn btn-outline" onclick="toggleFavorite(this)" style="padding: 10px 14px;">❤️</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // FILTER CATEGORIES
+        function filterCategory(cat) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (cat === 'all') {
+                renderCars(sampleCars);
+            } else {
+                const filtered = sampleCars.filter(c => c.category === cat);
+                renderCars(filtered);
+            }
+        }
+
+        // TOGGLE FAVORITE
+        function toggleFavorite(btn) {
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                btn.style.background = 'transparent';
+                favoriteCount--;
+            } else {
+                btn.classList.add('active');
+                btn.style.background = 'rgba(239, 68, 68, 0.2)';
+                favoriteCount++;
+                showToast("Tanlanganlarga qo'shildi!");
+            }
+            document.getElementById('favCount').innerText = favoriteCount;
+        }
+
+        // CALCULATOR LOGIC
+        const priceInput = document.getElementById('carPrice');
+        const downInput = document.getElementById('downPayment');
+        const termInput = document.getElementById('loanTerm');
+
+        function updateCalculator() {
+            const price = parseInt(priceInput.value);
+            const downPercent = parseInt(downInput.value);
+            const term = parseInt(termInput.value);
+
+            const downAmount = (price * downPercent) / 100;
+            const loanAmount = price - downAmount;
+            
+            // Simple interest calculation formula (20% annual rate)
+            const annualRate = 0.20;
+            const totalInterest = loanAmount * annualRate * (term / 12);
+            const totalPayable = loanAmount + totalInterest;
+            const monthlyPay = Math.round(totalPayable / term);
+
+            document.getElementById('carPriceVal').innerText = '$' + price.toLocaleString();
+            document.getElementById('downPaymentVal').innerText = downPercent + '%';
+            document.getElementById('loanTermVal').innerText = term + ' Oy';
+
+            document.getElementById('resDownPayment').innerText = '$' + downAmount.toLocaleString();
+            document.getElementById('resLoanAmount').innerText = '$' + loanAmount.toLocaleString();
+            document.getElementById('resMonthly').innerText = '$' + monthlyPay.toLocaleString();
+        }
+
+        priceInput.addEventListener('input', updateCalculator);
+        downInput.addEventListener('input', updateCalculator);
+        termInput.addEventListener('input', updateCalculator);
+
+        // STATS ANIMATION ON SCROLL
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const speed = target / 50;
+
+                const updateCount = () => {
+                    count += speed;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count).toLocaleString();
+                        setTimeout(updateCount, 30);
+                    } else {
+                        counter.innerText = target.toLocaleString() + '+';
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // FAQ TOGGLE
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // MODAL LOGIC
+        function openModal() {
+            document.getElementById('bookingModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            closeModal();
+            showToast("Arizangiz qabul qilindi! Tez orada bog'lanamiz.");
+        }
+
+        // TOAST NOTIFICATION SYSTEM
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // THEME TOGGLE (DARK / LIGHT)
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            themeBtn.innerText = newTheme === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // INIT ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCars(sampleCars);
+            updateCalculator();
+            animateCounters();
+
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeBtn.innerText = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        });
+    </script>
+</body>
+</html>
